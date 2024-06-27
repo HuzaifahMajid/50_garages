@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Garage Data Dashboard</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Garage Data Dashboard</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>House No</th>
+                <th>Street Address</th>
+                <th>City</th>
+                <th>Initial Inspection</th>
+                <th>Detailed Inspection</th>
+                <th>Report Development</th>
+                <th>Report filed</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                <td>{{ row['House No'] }}</td>
+                <td>{{ row['Street Address'] }}</td>
+                <td>{{ row['City'] }}</td>
+                <td>{{ row['Initial Inspection'] }}</td>
+                <td>{{ row['Detailed Inspection'] }}</td>
+                <td>{{ row['Report Development'] }}</td>
+                <td>{{ row['Report filed'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
