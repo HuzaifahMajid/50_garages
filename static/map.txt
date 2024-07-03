@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Garage Map</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <style>
+        #map { height: 500px; }
+        .popup-content {
+            max-width: 300px;
+        }
+        .popup-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .popup-table th, .popup-table td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        .popup-table th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Garage Map</h1>
+    <div id="map"></div>
+    <script>
+        var map = L.map('map').setView([40.7128, -74.0060], 12);  // Default centering on New York
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Function to create popup content with details
+        function createPopupContent(data) {
+            var tableContent = `
+                <table class="popup-table">
+                    <tr><th>House No</th><td>${data['House No']}</td></tr>
+                    <tr><th>Street Address</th><td>${data['Street Address']}</td></tr>
+                    <tr><th>City</th><td>${data['City']}</td></tr>
+                    <tr><th>Initial Inspection</th><td>${data['Initial Inspection']}</td></tr>
+                    <tr><th>Detailed Inspection</th><td>${data['Detailed Inspection']}</td></tr>
+                    <tr><th>Report Development</th><td>${data['Report Development']}</td></tr>
+                    <tr><th>Report filed</th><td>${data['Report filed']}</td></tr>
+                </table>
+            `;
+            return tableContent;
+        }
+
+        // Add markers from Flask-generated JSON
+        var markers = L.layerGroup();
+        var data = {{ data | tojson }};
+        
+        data.forEach(function(entry) {
+            var popupContent = createPopupContent(entry);
+            var marker = L.marker([entry['Latitude'], entry['Longitude']]).addTo(map);
+            marker.bindPopup(popupContent, { maxWidth: 'auto' });
+            markers.addLayer(marker);
+        });
+
+        map.addLayer(markers);
+    </script>
+</body>
+</html>

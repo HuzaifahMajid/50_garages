@@ -3,10 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <title>Garage Data Map</title>
+    <style>
+
+        body {
+            background: linear-gradient(to bottom, #4A90E2, #1C3D5A); /* Softer gradient transition */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #ffffff; /* White text color for better contrast */
+        }
+
+       .header {
+            background: linear-gradient(to right, #1477db, #011252); /* Gradient background */
+    border-bottom: 2px solid #011252; /* Dark grey bottom border */
+    padding: 20px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: #252a2f; /* Dark grey text color */
+}
+
+        .container {
+            text-align: center;
+            margin: 50px auto;
+            max-width: 600px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.2); /* Slightly more opaque background */
+            border-radius: 10px;
+        }
+
+        a {
+            display: inline-block;
+            background-color: #4A90E2; /* Blue background for links */
+            color: #ffffff; /* White text color for links */
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 10px 0;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        a:hover {
+            background-color: #1C3D5A;
+            color: #ffffff;
+        }
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #0e3d6d;
+            color: #ffffff;
+            text-align: center;
+            padding: 10px 0;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+        .footer a {
+            color: #ffffff; /* White color for the links */
+            text-decoration: none; /* No underline for the links */
+            margin: 0 30px; /* Space between links */
+        }
+        .footer a:hover {
+            color: #039de4; /* Light grey color when hovered */
+        }
+
+    </style>
 </head>
+
 <body>
-    <h1>Garage Data Map</h1>
-    <p><a href="/map" target="_blank">View Map</a></p>
-    <p><a href="/dashboard" target="_blank">View Status</a></p>
+    <div class="header">
+        Garage Data Map
+    </div> 
+    <div class="container">
+        <p><a href="/map" target="_blank">View Map</a></p>
+        <p><a href="/dashboard" target="_blank">View Status</a></p>
+    </div>
+
+    <div class="footer">
+        <a href="/">Main Menu</a> | <a href="/map">View Map</a>
+    </div>
 </body>
 </html>

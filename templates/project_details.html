@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Project Details</title>
+    <style>
+        .header {
+            background: linear-gradient(to right, #1477db, #011252); /* Gradient background */
+    border-bottom: 2px solid #011252; /* Dark grey bottom border */
+    padding: 20px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: #252a2f; /* Dark grey text color */
+
+}
+.project_id{
+    color: rgb(30, 62, 178);
+    
+}
+.footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #343a40;
+        color: #ffffff;
+        text-align: center;
+        padding: 10px 0;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+    }
+    </style>
+</head>
+<body>
+    <div class= header  > 
+        Project Details
+    </div>
+    <div>
+        <!-- Display project details dynamically -->
+        <div class = project_id>
+            Project ID: {{ project_id }}
+        </div>
+        <ul>
+            <li><b>House No:</b> {{ project_data['House No'] }}</li>
+            <li><b>Street Address:</b> {{ project_data['Street Address'] }}</li>
+            <li><b>City:</b> {{ project_data['City'] }}</li>
+            <!-- Add more details as needed -->
+        </ul>
+    </div>
+    <div>
+        <!-- Notes Section -->
+        <button onclick="toggleNotes()">Make Notes</button>
+        <div id="notesSection" style="display: none;">
+            <textarea id="notesTextarea" rows="4" cols="50"></textarea><br>
+            <button onclick="saveNotes()">Save Notes</button>
+        </div>
+        <button onclick="viewNotes()">View Notes</button>
+        <div id="notesDisplay" style="display: none;">
+            <!-- Display saved notes here -->
+        </div>
+    </div>
+
+    <script>
+        function toggleNotes() {
+            var notesSection = document.getElementById('notesSection');
+            notesSection.style.display = (notesSection.style.display === 'none') ? 'block' : 'none';
+        }
+
+        function saveNotes() {
+            var notesTextarea = document.getElementById('notesTextarea');
+            var notes = notesTextarea.value.trim();
+            // Implement save functionality using fetch or other method
+            // Example: send notes to backend for storage
+            console.log('Saving notes:', notes);
+        }
+
+        function viewNotes() {
+            var notesDisplay = document.getElementById('notesDisplay');
+            notesDisplay.style.display = (notesDisplay.style.display === 'none') ? 'block' : 'none';
+            // Implement view functionality to retrieve and display notes
+            // Example: fetch notes from backend and display them
+        }
+        <div class="footer">
+        <a href="/">Main Menu</a> | <a href="/index.html">Back to Dashboard</a>
+    </div>
+    </script>
+</body>
+</html>

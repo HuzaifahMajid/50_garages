@@ -4,28 +4,150 @@
     <meta charset="UTF-8">
     <title>Garage Data Dashboard</title>
     <style>
+        body {
+            background: linear-gradient(to right, #1477db, #011252);
+            font-family: Arial, sans-serif;
+            color: #252a2f;
+        }
+        .header {
+            background: linear-gradient(to right, #1477db, #011252);
+            border-bottom: 2px solid #011252;
+            padding: 20px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            color: #252a2f;
+        }
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #0e3d6d;
+            color: #ffffff;
+            text-align: center;
+            padding: 10px 0;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+        .footer a {
+            color: #ffffff; /* White color for the links */
+            text-decoration: none; /* No underline for the links */
+            margin: 0 30px; /* Space between links */
+        }
+        .footer a:hover {
+            color: #039de4; /* Light grey color when hovered */
+        }
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 12px;
+            background-color: rgba(255, 255, 255, 0.8);
         }
         th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
+            border: 3px solid #000000;
+            text-align: center;
             padding: 8px;
         }
         th {
-            background-color: #f2f2f2;
+            background-color: rgb(50, 140, 231);
+            color: #000fe1;
+            text-align: center;
+            
+        }
+        tr:nth-child(even) {
+            background-color: #82a8cd;
+            text-align: center;
+            
+        }
+        tr:nth-child(odd) {
+            background-color: #d4edda;
+            text-align: center;
+        }
+        .dropdown {
+            width: 100px; /* Adjusted width for the dropdown */
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            text-align: center;
+        }
+        /* Color classes for different statuses */
+        .completed {
+            background-color: #06671d;
+            color: #12f948;
+            border-style: double;
+            border-color: #155724;
+
+        }
+        .planned {
+            background-color: #ffeeba;
+            color: #856404;
+        }
+        .not-planned {
+            background-color: #e35662;
+            color: rgb(2, 0, 0);
+        }
+        .tbd {
+            background-color: #b99173;
+            color: #000;
+        }
+        .not-needed {
+            background-color: #c6e2ff;
+            color: #004085;
+        }
+        .not-started {
+            background-color: #b41623;
+            color: #e7b7bb;
+        }
+        .twenty-five-percent {
+            background-color: #d8d27f;
+            color: #000;
+        }
+        .fifty-one-percent {
+            background-color: #d7933a;
+            color: #856404;
+        }
+        .seventy-five-percent {
+            background-color: #df6325;
+            color: #004085;
+        }
+        .need-review {
+            background-color: #741b22;
+            color: #f82b3c;
+        }
+        .reviewed {
+            background-color: #27a043;
+            color: #155724;
+        }
+        .no {
+            background-color: #b41623;
+            color: #e7b7bb;
+        }
+        .draft-stage {
+            background-color: #ffeeba;
+            color: #856404;
+        }
+        .yes {
+            background-color: #06671d;
+            color: #12f948;
+            border-style: double;
+            border-color: #155724;
         }
     </style>
 </head>
 <body>
-    <h1>Garage Data Dashboard</h1>
+    <div class="header">
+        Garage Data Dashboard
+    </div>
     <table>
         <thead>
             <tr>
                 <th>House No</th>
                 <th>Street Address</th>
                 <th>City</th>
+                <th>ID Obtained</th>
                 <th>Initial Inspection</th>
                 <th>Detailed Inspection</th>
                 <th>Report Development</th>
@@ -38,13 +160,75 @@
                 <td>{{ row['House No'] }}</td>
                 <td>{{ row['Street Address'] }}</td>
                 <td>{{ row['City'] }}</td>
-                <td>{{ row['Initial Inspection'] }}</td>
-                <td>{{ row['Detailed Inspection'] }}</td>
-                <td>{{ row['Report Development'] }}</td>
-                <td>{{ row['Report filed'] }}</td>
+                <td>
+                    {% if row['ID Obtained'] %}
+                        <a href="/project_details/{{ row['ID Obtained'] }}" target="_blank">{{ row['ID Obtained'] }}</a>
+                    {% else %}
+                        <input type="text" class="id-input" value="" onchange="updateID(this, '{{ row['House No'] }}')">
+                    {% endif %}
+                </td>
+                <td>
+                    <select class="dropdown" onchange="updateStatus(this, 'Initial Inspection', '{{ row['House No'] }}')">
+                        <option value="not_planned" {% if row['Initial Inspection'] == '' or row['Initial Inspection'] is none %}selected{% endif %} class="not-planned">Not Planned</option>
+                        <option value="planned" {% if row['Initial Inspection'] == 'planned' %}selected{% endif %} class="planned">Planned</option>
+                        <option value="completed" {% if row['Initial Inspection'] == 'completed' %}selected{% endif %} class="completed">Completed</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="dropdown" onchange="updateStatus(this, 'Detailed Inspection', '{{ row['House No'] }}')">
+                        <option value="TBD" {% if row['Detailed Inspection'] == 'TBD' %}selected{% endif %} class="tbd">TBD</option>
+                        <option value="not_needed" {% if row['Detailed Inspection'] == 'not_needed' %}selected{% endif %} class="not-needed">Not Needed</option>
+                        <option value="planned" {% if row['Detailed Inspection'] == 'planned' %}selected{% endif %} class="planned">Planned</option>
+                        <option value="completed" {% if row['Detailed Inspection'] == 'completed' %}selected{% endif %} class="completed">Completed</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="dropdown" onchange="updateStatus(this, 'Report Development', '{{ row['House No'] }}')">
+                        <option value="not_started" {% if row['Report Development'] == 'not_started' %}selected{% endif %} class="not-started">Not Started</option>
+                        <option value="25_percent_complete" {% if row['Report Development'] == '25_percent_complete' %}selected{% endif %} class="twenty-five-percent">25% Complete</option>
+                        <option value="51_percent_complete" {% if row['Report Development'] == '51_percent_complete' %}selected{% endif %} class="fifty-one-percent">51% Complete</option>
+                        <option value="75_percent_complete" {% if row['Report Development'] == '75_percent_complete' %}selected{% endif %} class="seventy-five-percent">75% Complete</option>
+                        <option value="need_review" {% if row['Report Development'] == 'need_review' %}selected{% endif %} class="need-review">Need Review</option>
+                        <option value="reviewed" {% if row['Report Development'] == 'reviewed' %}selected{% endif %} class="reviewed">Reviewed</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="dropdown" onchange="updateStatus(this, 'Report filed', '{{ row['House No'] }}')">
+                        <option value="No" {% if row['Report Filed'] == 'No' %}selected{% endif %} class="no">No</option>
+                        <option value="Draft Stage" {% if row['Report Filed'] == 'Draft Stage' %}selected{% endif %} class="draft-stage">Draft Stage</option>
+                        <option value="Yes" {% if row['Report Filed'] == 'Yes' %}selected{% endif %} class="yes">Yes</option>
+                    </select>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    <script>
+        function updateStatus(selectElement, column, houseNo) {
+            var status = selectElement.value;
+            selectElement.className = 'dropdown ' + status.replace(/_/g, '-').toLowerCase();
+            fetch('/update_status', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ houseNo: houseNo, column: column, status: status })
+            }).then(response => response.json())
+              .then(data => console.log(data))
+              .catch(error => console.error('Error:', error));
+        }
+
+        // Function to initialize the select elements with the correct class based on the selected value
+        document.addEventListener('DOMContentLoaded', function () {
+            const selects = document.querySelectorAll('.dropdown');
+            selects.forEach(select => {
+                const status = select.value;
+                select.className = 'dropdown ' + status.replace(/_/g, '-').toLowerCase();
+            });
+        });
+    </script>
+     <div class="footer">
+        <a href="/">Main Menu</a> | <a href="/map">View Map</a>
+    </div>
 </body>
 </html>
